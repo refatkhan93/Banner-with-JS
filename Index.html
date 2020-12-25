@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="node_modules/jquery-ui/themes/base/all.css">
+    <link rel="stylesheet" href="node_modules/jquery-ui/demos/demos.css">
+    <link rel="stylesheet" href="custom.css">
+
+
+</head>
+
+<body class="bdy" id="bdy">
+
+    <div class="row">
+        <div class="col-md-9 left-side" id="left-side">
+            <div id="draggable" class="ui-widget-content">
+
+                <p class="intext" id="changeText"></p>
+            </div>
+            <div class="colorm" id="colorm">
+                <!-- <input class="jscolor"> -->
+                <canvas id="colorCanvas" class="color-canvas" width="100%" height="100%"></canvas>
+
+
+            </div>
+        </div>
+        <div class="col-md-3 right-side">
+            <div class="upload-image">
+                <i class="fa fa-upload icn" aria-hidden="true"></i>
+                <form>
+                    <input type="file" id="getval" name="getval" class="hidden" onchange="readURL(event)" />
+
+                    <label for="getval" class="custombtn">Select file</label>
+
+
+                </form>
+            </div>
+            <div class="">
+                <textarea class="textbox" name="textr" id="textr">Enter Your Text</textarea>
+            </div>
+            <form>
+                <input type="submit" name="stext" id="stext" class="stext"
+                    onclick="TextInsertFunction(); return false;">
+            </form>
+            <div class="alg">
+                <p>Text Alignment</p>
+                <form name="myForm">
+                    <table style="margin-left: 22%;margin-bottom: 30px;">
+                        <tr>
+                            <td><i class="fa fa-align-left icnalign"></i></td>
+                            <td><i class="fa fa-align-center icnalign"></i></td>
+                            <td><i class="fa fa-align-right icnalign"></i> </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="switch">
+                                    <input name="textal" type="radio" value="left">
+                                    <span class="slider round"></span>
+                                </label>
+                            </td>
+
+                            <td>
+                                <label class="switch">
+                                    <input name="textal" type="radio" value="center">
+                                    <span class="slider round"></span>
+                                </label>
+                            </td>
+
+                            <td>
+                                <label class="switch">
+                                    <input name="textal" type="radio" value="right">
+                                    <span class="slider round"></span>
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="jscolor.js"></script>
+
+<script>
+    
+
+    function readURL(event) {
+        var getImagePath = URL.createObjectURL(event.target.files[0]);
+        $('#left-side').css('background-image', 'url(' + getImagePath + ')');
+    }
+    $(function () {
+        $("#draggable").draggable();
+        // $("#draggable").resizable();
+    });
+    var rad = document.myForm.textal;
+    for (var i = 0; i < rad.length; i++) {
+        rad[i].onclick = function () {
+            $('#draggable').css('text-align', this.value);
+
+        };
+    }
+    function TextInsertFunction() {
+
+        var txt = document.getElementById("textr").value;
+
+        document.getElementById("changeText").innerText = txt;
+
+    }
+    function sleep(milliseconds) {
+        const date = Date.now();
+        let currentDate = null;
+        do {
+            currentDate = Date.now();
+        } while (currentDate - date < milliseconds);
+    }
+    document.getElementById('draggable').onmouseover = document.getElementById('draggable').onmouseout = handler;
+    function handler(event) {
+        if (event.type == 'mouseover') {
+            $('#draggable').css('border', '2px dashed black');
+            $("#draggable").resizable();
+        }
+        if (event.type == 'mouseout') {
+            $('#draggable').css('border', 'hidden');
+
+        }
+    }
+
+
+    function initColorPicker() {
+        var canvas = document.getElementById('colorCanvas');
+        var canvasContext = canvas.getContext('2d');
+
+        let gradient = canvas.getContext('2d').createLinearGradient(0, 0, canvas.width, 0)
+        gradient.addColorStop(0, '#ff0000')
+        gradient.addColorStop(1 / 6, '#ffff00')
+        gradient.addColorStop((1 / 6) * 2, '#00ff00')
+        gradient.addColorStop((1 / 6) * 3, '#00ffff')
+        gradient.addColorStop((1 / 6) * 4, '#0000ff')
+        gradient.addColorStop((1 / 6) * 5, '#ff00ff')
+        gradient.addColorStop(1, '#ff0000')
+        canvas.getContext('2d').fillStyle = gradient
+        canvas.getContext('2d').fillRect(0, 0, canvas.width, canvas.height)
+
+        gradient = canvas.getContext('2d').createLinearGradient(0, 0, 0, canvas.height)
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 1)')
+        gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0)')
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)')
+        canvas.getContext('2d').fillStyle = gradient
+        canvas.getContext('2d').fillRect(0, 0, canvas.width, canvas.height)
+
+        gradient = canvas.getContext('2d').createLinearGradient(0, 0, 0, canvas.height)
+        gradient.addColorStop(0, 'rgba(0, 0, 0, 0)')
+        gradient.addColorStop(0.5, 'rgba(0, 0, 0, 0)')
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 1)')
+        canvas.getContext('2d').fillStyle = gradient
+        canvas.getContext('2d').fillRect(0, 0, canvas.width, canvas.height)
+
+
+        canvas.onclick = function (e) {
+            console.log()
+            var imgData = canvasContext.getImageData((e.offsetX / canvas.clientWidth) * canvas.width, (e.offsetY / canvas.clientHeight) * canvas.height, 1, 1)
+            var rgba = imgData.data;
+            var color = "rgba(" + rgba[0] + ", " + rgba[1] + ", " + rgba[2] + ", " + rgba[3] + ")";
+            $('#changeText').css('color', color);
+        }
+    }
+
+    initColorPicker()
+
+
+</script>
